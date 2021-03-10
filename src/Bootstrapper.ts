@@ -29,10 +29,18 @@ export class Bootstrapper {
         resolve = res;
         reject = rej;
       }
-
-      Utils.loadManifest(that._options.manifestUri).then(json => {
-        that._loaded(that, json, resolve, reject);
-      });
+      if (typeof that._options.manifestUri === "object") {
+        that._loaded(
+          that,
+          JSON.stringify(that._options.manifestUri),
+          resolve,
+          reject
+        );
+      } else {
+        Utils.loadManifest(that._options.manifestUri).then(json => {
+          that._loaded(that, json, resolve, reject);
+        });
+      }
     });
   }
 
